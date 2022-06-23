@@ -46,7 +46,7 @@
                     <td>
                         <button type="button" onclick="showProductEditInfo('{{ $r->Pid }}','{{ $r->title }}','{{ $r->category }}','{{ $r->quantity }}','{{ $r->base_price }}','{{ $r->unit }}','{{ $r->description }}')" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal">Edit</button>
                         <a type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmModal" >Delete</a>
-                        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#placeToBidModal">Place to bid</button>
+                        <button type="button" onclick="placeToBid('{{$r->Pid}}')" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#placeToBidModal">Place to bid</button>
                     </td>
                     
                 </tr>
@@ -72,6 +72,7 @@
 <form  method="post" enctype="multipart/form-data" action="{{route('ProductEntry')}}">
 @csrf
 <div class="mb-3">
+  
 <label for="title" class="form-label">Product Name:</label>
 <input type="text" class="form-control" id="title" name="title">
 </div>
@@ -128,6 +129,11 @@
                 console.log(eid);
                 $('input[name="_token"]').val();
               }
+
+    function placeToBid(pid){
+      $("#pid").val(pid);
+      console.log(pid);
+    }          
   </script>
 
 
@@ -196,10 +202,12 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-      <form class="" method="post" enctype="multipart/form-data" action="{{route('ProductUpdate')}}"> 
+      <form class="" method="post" enctype="multipart/form-data" action="{{route('ProductBid')}}"> 
         
           @csrf
           
+          <input type="hidden" id="pid" name="pid">
+
           <div class="mb-3">
             <label for="startingBid" class="form-label">Starting Bid(In Rs):</label>
             <input type="number" class="form-control" id="startingBid" name="startingBid">
@@ -210,7 +218,7 @@
             <input type="number" class="form-control" id="bidTime" name="bidTime" placeholder="XX">
           </div>
 
-          <button type="submit" id="editProduct" class="btn btn-primary">Submit</button>
+          <button type="submit" id="submit" class="btn btn-primary">Submit</button>
 
         </form>
 
@@ -238,7 +246,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <a type="confirm" id="confirmModal" class="btn btn-primary" href="{{route('ProductDelete',$r->Pid)}}" >Yes</a>
+        <a type="confirm" id="confirmModal" class="btn btn-primary" href="{{route('ProductDelete')}}" >Yes</a>
       </div>
     </div>
   </div>

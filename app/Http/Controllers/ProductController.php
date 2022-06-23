@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\user;
 use App\Models\Product;
+use Illuminate\Support\Facades\Auth;
+use App\Models\bidInfo;
+use Carbon\Carbon;
 
 class ProductController extends Controller
 {
@@ -29,6 +32,7 @@ class ProductController extends Controller
      $product->base_price = $request->base_price;
      $product->unit = $request->unit;
      $product->description = $request->description;
+     $product->Uid=Auth::User()->id;
      $product->save();
      return redirect(route('dashboard'));
 
@@ -50,6 +54,20 @@ class ProductController extends Controller
 
         return redirect(route('dashboard'));
     }
+
+    public function placeToBid(Request $request){
+        $bid=new bidInfo();
+        $bid->startingAmount = $request->startingBid;
+        $bid->timePeriod=$request->bidTime;
+        $bid->pid=$request->pid;
+        $bid->fid=Auth::user()->id;
+        $bid->submitTime=Carbon::now();
+
+        $bid->save();
+
+        return redirect(route('dashboard'));
+    }
+
     public function destroy($id)
     {
         product::destroy($id);

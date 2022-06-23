@@ -21,6 +21,9 @@ return new class extends Migration
             $table->string("unit");
             $table->double("base_price");
             $table->string("description");
+            $table->unsignedBigInteger("Uid");
+            $table->foreign('Uid')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+
             $table->timestamps();
         });
     }

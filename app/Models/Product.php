@@ -19,7 +19,9 @@ class Product extends Model
         'quantity',
         'base_price',
         'unit',
-        'description'
+        'description',
+        'Uid'
+
     ];
 
 }
